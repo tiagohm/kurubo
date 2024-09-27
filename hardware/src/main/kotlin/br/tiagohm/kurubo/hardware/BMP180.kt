@@ -2,7 +2,6 @@ package br.tiagohm.kurubo.hardware
 
 import br.tiagohm.kurubo.client.Firmata
 import br.tiagohm.kurubo.client.TwoWire
-import br.tiagohm.kurubo.client.TwoWireable
 import org.slf4j.LoggerFactory
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeoutException
@@ -55,7 +54,7 @@ data class BMP180(
     override val firmata: Firmata,
     val mode: Mode = Mode.ULTRA_LOW_POWER,
     override val pollInterval: Long = 5000L,
-) : AbstractHardware(firmata), Barometer, Thermometer, TwoWireable, Pollable {
+) : AbstractHardware(firmata), Barometer, Thermometer, Pollable {
 
     @Suppress("unused")
     enum class Mode(@JvmField val sleepTimeInMilliseconds: Long) {
@@ -86,8 +85,7 @@ data class BMP180(
 
     override val name = "BMP180"
 
-    @Volatile override lateinit var device: TwoWire
-        private set
+    private lateinit var device: TwoWire
 
     @Volatile override var pressure = 0.0
         private set

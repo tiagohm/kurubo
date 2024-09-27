@@ -21,10 +21,10 @@ enum class PinMode {
 
     companion object {
 
-        fun resolve(modeToken: Int): PinMode {
-            return if (modeToken == PIN_MODE_IGNORE) IGNORED
-            else if (modeToken == TOTAL_PIN_MODES) UNSUPPORTED
-            else entries[modeToken]
+        fun resolve(mode: Int) = when (mode) {
+            PIN_MODE_IGNORE -> IGNORED
+            TOTAL_PIN_MODES -> UNSUPPORTED
+            else -> entries[mode]
         }
     }
 }

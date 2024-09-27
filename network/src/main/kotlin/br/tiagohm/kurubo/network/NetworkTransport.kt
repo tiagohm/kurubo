@@ -2,6 +2,8 @@ package br.tiagohm.kurubo.network
 
 import br.tiagohm.kurubo.transport.Transport
 import br.tiagohm.kurubo.transport.TransportMode
+import java.io.InputStream
+import java.io.OutputStream
 import java.net.InetSocketAddress
 import java.net.Socket
 
@@ -11,27 +13,32 @@ data class NetworkTransport(val address: InetSocketAddress) : Transport {
 
     constructor(host: String, port: Int = 27016) : this(InetSocketAddress(host, port))
 
+    private val inputStream: InputStream
+    private val outputStream: OutputStream
+
     init {
         socket.keepAlive = true
         socket.connect(address)
+        inputStream = socket.getInputStream()
+        outputStream = socket.getOutputStream()
     }
 
     override val mode = TransportMode.NETWORK
 
     override fun read(): Int {
-        return socket.getInputStream().read()
+        return inputStream.read()
     }
 
     override fun write(b: Int) {
-        socket.getOutputStream().write(b)
+        outputStream.write(b)
     }
 
     override fun write(data: ByteArray, offset: Int, length: Int) {
-        socket.getOutputStream().write(data, offset, length)
+        outputStream.write(data, offset, length)
     }
 
     override fun flush() {
-        socket.getOutputStream().flush()
+        outputStream.flush()
     }
 
     override fun close() {

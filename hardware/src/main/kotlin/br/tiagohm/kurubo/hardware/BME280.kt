@@ -2,7 +2,6 @@ package br.tiagohm.kurubo.hardware
 
 import br.tiagohm.kurubo.client.Firmata
 import br.tiagohm.kurubo.client.TwoWire
-import br.tiagohm.kurubo.client.TwoWireable
 import br.tiagohm.kurubo.client.bit3
 import org.slf4j.LoggerFactory
 import java.util.concurrent.ConcurrentHashMap
@@ -29,7 +28,7 @@ data class BME280(
     val humiditySampling: SamplingMode = SamplingMode.X16,
     val filter: FilterMode = FilterMode.OFF,
     val standByDuration: StandByDuration = StandByDuration.MS_0_5,
-) : AbstractHardware(firmata), Barometer, Thermometer, Hygrometer, TwoWireable, Pollable {
+) : AbstractHardware(firmata), Barometer, Thermometer, Hygrometer, Pollable {
 
     enum class Mode(@JvmField val bits: Int) {
         SLEEP(0b00),
@@ -107,8 +106,7 @@ data class BME280(
     override var name = "BME280"
         private set
 
-    @Volatile override lateinit var device: TwoWire
-        private set
+    private lateinit var device: TwoWire
 
     @Volatile override var pressure = 0.0
         private set

@@ -16,15 +16,14 @@ import java.util.concurrent.ConcurrentHashMap
 data class AM2320(
     override val firmata: Firmata,
     override val pollInterval: Long = 5000L,
-) : AbstractHardware(firmata), TwoWireable, Thermometer, Hygrometer, TwoWireListener, Pollable {
+) : AbstractHardware(firmata), Thermometer, Hygrometer, TwoWireListener, Pollable {
 
     private val thermometerListeners = ConcurrentHashMap.newKeySet<ThermometerListener>(1)
     private val hygrometerListeners = ConcurrentHashMap.newKeySet<HygrometerListener>(1)
 
     override val name = "AM2320"
 
-    @Volatile override lateinit var device: TwoWire
-        private set
+    private lateinit var device: TwoWire
 
     @Volatile override var humidity = 0.0
         private set

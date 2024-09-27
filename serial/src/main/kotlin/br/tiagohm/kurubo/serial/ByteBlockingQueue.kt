@@ -17,6 +17,9 @@ class ByteBlockingQueue(private val buffer: ByteArray) {
     private val lock = ReentrantLock()
     private val notEmpty = lock.newCondition()
 
+    val size
+        get() = count
+
     fun offer(b: Byte): Boolean {
         lock.lock()
 
@@ -36,6 +39,30 @@ class ByteBlockingQueue(private val buffer: ByteArray) {
         return true
     }
 
+    fun offer(data: ByteArray): Boolean {
+        if (data.isNotEmpty()) {
+            lock.lock()
+
+            try {
+                if (count + data.size > buffer.size) {
+                    return false
+                }
+
+                repeat(data.size) {
+                    buffer[tail] = data[it]
+                    tail = (tail + 1) % buffer.size
+                }
+
+                count += data.size
+                notEmpty.signal()
+            } finally {
+                lock.unlock()
+            }
+        }
+
+        return true
+    }
+
     fun take(): Byte {
         lock.lock()
 
@@ -47,6 +74,7 @@ class ByteBlockingQueue(private val buffer: ByteArray) {
             val b = buffer[head]
             head = (head + 1) % buffer.size
             count--
+
             return b
         } finally {
             lock.unlock()

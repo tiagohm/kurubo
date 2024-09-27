@@ -1,8 +1,10 @@
 package br.tiagohm.kurubo.hardware
 
-import br.tiagohm.kurubo.client.Pinnable
+import br.tiagohm.kurubo.client.Pin
 
-interface DigitalOutput : Hardware, Pinnable {
+interface DigitalOutput : Hardware {
+
+    val pin: Pin
 
     fun on() {
         pin.value = 1

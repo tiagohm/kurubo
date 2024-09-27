@@ -29,11 +29,8 @@ data class SerialTransport(
 
                     override fun serialEvent(event: SerialPortEvent) {
                         if (event.eventType == SerialPort.LISTENING_EVENT_DATA_RECEIVED) {
-                            for (b in event.receivedData) {
-                                if (!queue.offer(b)) {
-                                    LOG.warn("parser reached byte queue limit and some bytes were skipped")
-                                    break
-                                }
+                            if (!queue.offer(event.receivedData)) {
+                                LOG.warn("parser reached byte queue limit and some bytes were skipped")
                             }
                         }
                     }

@@ -1,0 +1,27 @@
+{
+  "boards": [
+    {
+      "model": "ESP8266",
+      "connection": {
+        "type": "NETWORK",
+        "serial": {
+          "portName": "/dev/ttyUSB0",
+          "baudRate": 115200
+        },
+        "network": {
+          "host": "192.168.31.137",
+          "port": 27016
+        }
+      },
+      "hardwares": [
+        {
+          "model": "BME280",
+          "address": 0
+        },
+        {
+          "model": "AM2320"
+        }
+      ]
+    }
+  ]
+}

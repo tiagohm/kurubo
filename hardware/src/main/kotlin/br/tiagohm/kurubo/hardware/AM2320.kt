@@ -108,7 +108,7 @@ data class AM2320(
 
         private val LOG = LoggerFactory.getLogger(AM2320::class.java)
 
-        @JvmStatic private val WAKE_UP = byteArrayOf(0)
-        @JvmStatic private val READ = byteArrayOf(READ_REGISTER_CMD.toByte(), REG_HUM_H.toByte(), 4)
+        private val WAKE_UP = byteArrayOf(0)
+        private val READ = byteArrayOf(READ_REGISTER_CMD.toByte(), REG_HUM_H.toByte(), 4)
     }
 }
